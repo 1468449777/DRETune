@@ -1,5 +1,5 @@
 #globalValue.py
-# 主要配置文件，还有其他的一些配置分布在train_wxc.py和env.py
+# 主要配置文件，还有其他的一些配置分布在train_.py和env.py
 import threading
 
 # 线程交互事件
@@ -65,6 +65,7 @@ SSH_CNT = 0
 # 3. data_name
 # 4. load_bash, load_tpcc
 # 5. CE_LOAD_NUM
+# 6. 以及一些其他的连接信息和文件存放路径信息
 
 CONNECT_SE_IP = ['127.0.0.1']
 CONNECT_CE_IP = ['127.0.0.1']   # primary ip 必须在index=0处
@@ -72,14 +73,15 @@ CONNECT_CE_IP = ['127.0.0.1']   # primary ip 必须在index=0处
 # 加了负载的CE的数量
 CE_LOAD_NUM = 1
 
+#SE,CE端口号,以及远程连接数据库主机的用户名，密码
 SE_PORT = 4000
 CE_PORT = 2000
-SSH_USERNAME = 'mxr'
-SSH_PASSWD = '1'
+SSH_USERNAME = ''
+SSH_PASSWD = ''
 
-BASE_HOME = '/home/mxr/KnobsTuning/LlamaTune/ma_env'
+BASE_HOME = ''#用户路径
 
-TMP_FILE = '/Users/mxr/Desktop/tmp/'
+TMP_FILE = '' #tmp文件的路径
 
 BEST_FILE = './test_model/'
 
@@ -99,29 +101,26 @@ SCORES_FILE = "./test_model/scores.txt"
 
 TRAIN_REWARD_CAL_FILE = "./test_model/train_reward_cal.txt"
 
-RPM_SRC = f'{BASE_HOME}/matune_wxc/test_model/actions_reward.csv'
-RPM_DEST = f'{BASE_HOME}//matune_wxc/test_model/actions_reward_new.csv'
-
-
-MYSQLD_OPEN_EXEC_CE = 'nohup {BASE_HOME}/csdb_tune/csdb_buffer_tune/bld/sql/mysqld ' \
-'--ce=on --datadir={BASE_HOME}/csdb/ma/ScriptMA/ce_data/data '  \
+#MySQL服务启动相关
+MYSQLD_OPEN_EXEC_CE = 'nohup Yourpath/mysqld ' \
+'--ce=on --datadir=Yourpathh '  \
 '--seuser=root --sepassword=root '  \
 '--innodb_use_native_aio=0 '  \
-'--configpath={BASE_HOME}/csdb_tune/csdb_buffer_tune/ma_se/ma_ce_config.json ' \
+'--configpath=Yourpath/**.json ' \
 '--skip-grant-tables --max_prepared_stmt_count=1000000 --max_connections=5000 ' \
 '--user=root '
 
 
-MYSQLD_OPEN_EXEC_SE =f'{BASE_HOME}/csdb_tune/csdb_buffer_tune/bld/sql/mysqld ' \
-'--se=on --datadir={BASE_HOME}/csdb/ma/ScriptMA/se_data/data ' \
+MYSQLD_OPEN_EXEC_SE =f'Yourpath/mysqld ' \
+'--se=on --datadir=Yourpath ' \
 '--seuser=root --sepassword=root ' \
-'--configpath={BASE_HOME}/csdb_tune/csdb_buffer_tune/ma_se/ma_se_config.json ' \
+'--configpath=Yourpath/**.json ' \
 '--innodb_use_native_aio=0 --skip-grant-tables ' \
 '--user=root '
+#定义了CE,SE模式下MySQL服务输出重定向的命令后缀，将输出重定向到指定的.txt文件中
 
-# MYSQLD_OUTPUT = ' > /home/dawn/mysqld_output.txt 2>/home/dawn/mysqld_output.txt &'
-MYSQLD_OUTPUT_CE = ' > {BASE_HOME}/csdb_tune/ce_output.txt 2>{BASE_HOME}/csdb_tune/ce_output.txt &'
-MYSQLD_OUTPUT_SE = ' > {BASE_HOME}/csdb_tune/se_output.txt 2>{BASE_HOME}/csdb_tune/se_output.txt &'
+MYSQLD_OUTPUT_CE = ' '
+MYSQLD_OUTPUT_SE = ' '
 
 # kill all mysqld
 MYSQLD_CLOSE_EXEC = "ps aux|grep -v grep|grep mysqld|awk '{print $2}'|xargs kill -9"
@@ -132,17 +131,9 @@ MYSQLD_CHECK = 'ps aux|grep -v grep|grep mysqld'
 
 
 # 修改数据集需要配合压测指令一起修改
-DATA_NAME = 'data_1GB.tar.gz'
-NEW_DATA_CE_CMD = f''' 
-echo "ready to prepare new data" && \
-rm -rf {BASE_HOME}/csdb/ma/ScriptMA/ce_data/* && tar -xvf {BASE_HOME}/csdb/ma/ScriptMA/{DATA_NAME} -C {BASE_HOME}/csdb/ma/ScriptMA/ce_data/ > /dev/null && \
-echo "finish" 
-'''
-NEW_DATA_SE_CMD = f''' 
-echo "ready to prepare new data" && \
-rm -rf {BASE_HOME}/csdb/ma/ScriptMA/se_data/* && tar -xvf {BASE_HOME}/csdb/ma/ScriptMA/{DATA_NAME} -C {BASE_HOME}/csdb/ma/ScriptMA/se_data/ > /dev/null && \
-echo "finish" 
-'''
+DATA_NAME = ''  #包含了测试或实验所需的数据集的路径
+NEW_DATA_CE_CMD = f''
+NEW_DATA_SE_CMD = f''
 
 
 
@@ -155,14 +146,11 @@ NEW_DATA_SE_TPCC_CMD = f'{BASE_HOME}/csdb_tune/new_data_se_tpcc.sh'
 # LOAD_BASH = 'nohup /home/dawn/test.sh ' \
 #             '> /home/dawn/test_output.txt 2>/home/dawn/test_output.txt &'
 
-LOAD_BASH = 'nohup {BASE_HOME}/csdb_tune/test.sh ' \
-            '> {BASE_HOME}/csdb_tune/test_output.txt 2>{BASE_HOME}//csdb_tune/test_output.txt &'
+#执行sysbench和tpcc测试，并将结果导向文件MYSQLD_OUTPUT_CE，MYSQLD_OUTPUT_SE中
+LOAD_BASH = ''
 
-LOAD_TPCC = 'nohup {BASE_HOME}/csdb_tune/test_tpcc.sh ' \
-            '> {BASE_HOME}/csdb_tune/test_output.txt 2>{BASE_HOME}//csdb_tune/test_output.txt &'
+LOAD_TPCC = ''
 
-TEST_RES_FILE = f'{BASE_HOME}/csdb_tune/test_output/'
-TEST_TPCC_FILE = f'{BASE_HOME}/csdb_tune/tpcc_output/'
 MAX_REWARD = -1
 
 REWARD_NOW = -1
@@ -194,8 +182,7 @@ GRID_SERACH_AMPL = 5
 # 是否开启proxysql
 USE_PROXY_SQL = True
 
-# 是否开启规则的SHAP分析
-USE_SHAP_COLLECT_DATA = True
+
 
 # 以前测试用的，已废弃
 LOAD_TYPE = "wo"

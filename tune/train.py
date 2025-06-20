@@ -810,8 +810,6 @@ class MATuner:
         
         
 
-        src = globalValue.RPM_SRC
-        dest = globalValue.RPM_DEST
         # 往经验池中预存数据
         while len(rpm) < MEMORY_WARMUP_SIZE:
             print("经验池中数据数量: ", len(rpm))
