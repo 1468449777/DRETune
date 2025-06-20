@@ -1,0 +1,40 @@
+# Build and Release Folders
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
+
+
+model_transfer/rpms/*
+!model_transfer/rpms/.gitkeep
+model_transfer/models/*
+!model_transfer/models/.gitkeep
+
+
+test_model/*
+!test_model/.gitkeep
+
+transfer_rpm/ro_backup/*
+!transfer_rpm/ro_backup/.gitkeep
+transfer_rpm/rw_backup/*
+!transfer_rpm/rw_backup/.gitkeep
+transfer_rpm/wo_backup/*
+!transfer_rpm/wo_backup/.gitkeep
+
+
+**/rule_shap/res
+
+# Other files and folders
+.settings/
+
+# Executables
+*.swf
+*.air
+*.ipa
+*.apk
+
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.
+
+__pycache__/
