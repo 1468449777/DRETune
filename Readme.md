@@ -22,13 +22,16 @@ adjustment and magnitude adjustment.
     `num_mapper.py:`Solving the problem of projecting multiple important dimensions onto the same low - dimensional space.
 - `maEnv/*:`Node environment instances and tool instances.
 - `model_transfer/`
+
   `load_feature.py:`Obtain feature vectors.
+
   `make_model.py:` Code related to creating datasets required for transfer.
+  
 - `my_algorithm/` Algorithm implementation.
   
   `agent.py:` Implementation of the agent.
   
-  `sac_2_wxc.py/sac_model_wxc.py:` Construction of SAC algorithm network models.
+  `sac_2.py/sac_model.py:` Construction of SAC algorithm network models.
 
   `replay_memory.py:` Implementation of the experience pool.
 
