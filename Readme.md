@@ -54,6 +54,78 @@ connected via network communication.
 The source code is recommended to run under the Python 3.8 environment.. To install the required packages run the following command:
 
     pip3 install -r requirements.txt    
+
+## Expert Rules for System Tuning
+
+This diagram illustrates an expert rule system for automatically tuning database or cache performance. The system works in three steps:
+
+1. State Conditions （S）
+
+The system monitors runtime metrics and checks the following conditions:
+
+Write-intensive workload: write_per_second > read_per_second
+
+Read-intensive workload: write_per_second < read_per_second
+
+Oversized LRU cache: lru_size > 2 * flush_size
+
+Buffer pool too small: bp_size < 2 * lru_size
+
+Frequent object creation but no free space: create_per_second > 0 && free_size = 0
+
+2. Labeling (
+Lab=label(S)）
+
+The system maps states to labels, which classify the workload and system pressure:
+
+Label A (Access Pattern)
+
+A = 0 → Write-intensive
+
+A = 1 → Read-intensive
+
+Label B (System Pressure)
+
+B = 0 → Low pressure
+
+B = 1 → High pressure
+
+3.Action(A=action(lab)))
+
+Each label corresponds to specific tuning actions.
+("+" means increase, "–" means decrease)
+
+Write-intensive (A=0)
+
+Decrease old_blocks_time
+
+Increase LRU_scan_depth
+
+Read-intensive (A=1)
+
+Decrease read_ahead_threshold
+
+Low pressure (B=0)
+
+Decrease srv_buf_pool_size
+
+High pressure (B=1)
+
+Increase srv_buf_pool_size
+
+Increase io_capacity
+
+4. IF–THEN Rules (Summary)
+
+IF writes dominate reads → THEN decrease old block time, increase LRU scan depth.
+
+IF reads dominate writes → THEN decrease read-ahead threshold.
+
+IF system pressure is low → THEN reduce buffer pool size.
+
+IF system pressure is high → THEN enlarge buffer pool size and increase I/O capacity.
+
+![img.png](img.png)
 ## Run Experiments
 
 Training Entry main.py
