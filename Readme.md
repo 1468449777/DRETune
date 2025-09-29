@@ -40,6 +40,8 @@ adjustment and magnitude adjustment.
 - `test_scripts/*`Some test scripts.
 
 - `transfer_rpm`The main code for transfer learning in transfer_rpm.
+  
+- `true_expert_samples.py`The true expert samples.
 
 NOTE: This code has been adapted to the internal database to some extent, as it needs to obtain a lot of internal database information that cannot be obtained through SQL statements. If you want to use this tuning code, you can modify the communication with the database.
 ## Environment
